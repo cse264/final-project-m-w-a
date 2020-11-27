@@ -12,22 +12,25 @@ const io = socketio(server);
 app.use(express.static(path.join(__dirname, 'public')));
 
 const users = new Set();
-const currUser;
 
 function signupUser(id, username, password, chat) {
-	// use a fetch to get this person or make a new person from mongo
-	// then set currUser as it
-	const user = {id, username, password, chat};
-	users.add(user);
-	return user;
+        // use a fetch to get this person or make a new person from mongo
+        // then set currUser as it
+        const user = {id, username, password, chat};
+        users.add(user);
+        return user;
 }
 
-function userLeave() {
-	users.delete(currUser);
+function getCurrentUser(id) {
+  return [...users].filter(i => i.id == id);
+}
+
+function userLeave(id) {
+        [...users].filter(i => i.id != id);
 }
 
 function getChatUsers() {
-	return [...users].filter(i => i.chat == currUser.chat);
+        return [...users].filter(i => i.chat == currUser.chat);
 }
 
 const botName = 'MWA Chat';
@@ -50,10 +53,10 @@ io.on('connection', socket => {
         formatMessage(botName, `${user.username} has joined the chat`)
       );
 
-    // Send users and room info
-    io.to(user.chat).emit('roomUsers', {
-      room: user.room,
-      users: getRoomUsers(user.room)
+    // Send users and chat info
+    io.to(user.chat).emit('chatUsers', {
+      chat: user.chat,
+      users: getChatUsers(user.chat)
     });
   });
 
@@ -61,7 +64,7 @@ io.on('connection', socket => {
   socket.on('chatMessage', msg => {
     const user = getCurrentUser(socket.id);
 
-    io.to(user.room).emit('message', formatMessage(user.username, msg));
+    io.to(user.chat).emit('message', formatMessage(user.username, msg));
   });
 
   // Runs when client disconnects
@@ -69,15 +72,15 @@ io.on('connection', socket => {
     const user = userLeave(socket.id);
 
     if (user) {
-      io.to(user.room).emit(
+      io.to(user.chat).emit(
         'message',
         formatMessage(botName, `${user.username} has left the chat`)
       );
 
-      // Send users and room info
-      io.to(user.room).emit('roomUsers', {
-        room: user.room,
-        users: getRoomUsers(user.room)
+      // Send users and chat info
+      io.to(user.chat).emit('chatUsers', {
+        chat: user.chat,
+        users: getChatUsers(user.chat)
       });
     }
   });
