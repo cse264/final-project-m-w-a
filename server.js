@@ -2,7 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
-const formatMessage = require('./utils/messages');
+const moment = require('moment');
 
 const app = express();
 const server = http.createServer(app);
@@ -12,6 +12,14 @@ const io = socketio(server);
 app.use(express.static(path.join(__dirname, 'public')));
 
 const users = new Set();
+
+function formatMessage(username, text) {
+  return {
+    username,
+    text,
+    time: moment().format('h:mm a')
+  };
+}
 
 function signupUser(id, username, password, chat) {
         // use a fetch to get this person or make a new person from mongo
