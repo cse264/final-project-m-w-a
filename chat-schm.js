@@ -8,6 +8,13 @@ const chatSchmear = new Schema(
     },
     sender: {
       type: String
-    }
+    },
+    date: {
+      type: Date
+    },
   },
 );
+
+const Chat = mongoose.model('Chat', chatSchmear);
+
+module.exports = Chat;
