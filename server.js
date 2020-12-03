@@ -43,12 +43,12 @@ io.sockets.on('connection', function(socket) {
     socket.username = username;
     io.emit('is_online', '😼 <i>' + socket.username + ' joined the chat..</i>');
   });
-  
+
   socket.on('disconnect', function(username) {
     socket.username = username;
     io.emit('is_online', '😿 <i>' + socket.username + ' left the chat..</i>');
   });
-  
+
   socket.on('chat_message', function(message) {
     var tmp = new Chat({'message': message, 'sender': socket.username, 'date': Date.now()});
     io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
@@ -58,6 +58,6 @@ io.sockets.on('connection', function(socket) {
         }
     });
   });
-  
+
 });
 const server = http.listen(3000);
