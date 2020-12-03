@@ -10,6 +10,8 @@ const http = require('http').Server(app);
 //socket io
 const io = require('socket.io')(http);
 
+var numberOfUsers = 0;
+
 mongoose.Promise = global.Promise;
 
 mongoose.connect('mongodb://SCRAM:password1234@cluster0-shard-00-00.qlkv9.mongodb.net:27017,cluster0-shard-00-01.qlkv9.mongodb.net:27017,cluster0-shard-00-02.qlkv9.mongodb.net:27017/Cluster0?ssl=true&replicaSet=atlas-q65qop-shard-0&authSource=admin&retryWrites=true&w=majority', { useNewUrlParser: true });
@@ -42,21 +44,30 @@ io.sockets.on('connection', function(socket) {
   socket.on('username', function(username) {
     socket.username = username;
     io.emit('is_online', '😼 <i>' + socket.username + ' joined the chat..</i>');
+    numberOfUsers++;
   });
 
   socket.on('disconnect', function(username) {
     socket.username = username;
     io.emit('is_online', '😿 <i>' + socket.username + ' left the chat..</i>');
+    numberOfUsers--;
   });
 
   socket.on('chat_message', function(message) {
-    var tmp = new Chat({'message': message, 'sender': socket.username, 'date': Date.now()});
-    io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
-    tmp.save(function (err, idk) {
-        if (err) {
-                console.log("Error saving message");
-        }
-    });
+    // Generate a random number up to the number of people in the chat
+    var nonce = Math.floor(Math.random() * numberOfUsers);
+    // Only allow message to go through if number is less than 2,
+    // to ensure that on average 2 people are speaking at most
+    // at once on the chat.
+    if (nonce < 5) {
+        var tmp = new Chat({'message': message, 'sender': socket.username, 'date': Date.now()});
+        io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
+        tmp.save(function (err, idk) {
+                if (err) {
+                        console.log("Error saving message");
+                }
+        });
+    }
   });
 
 });
