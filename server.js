@@ -1,96 +1,62 @@
-const path = require('path');
-const http = require('http');
-const express = require('express');
+//socket io
 const socketio = require('socket.io');
-const moment = require('moment');
 
+//http module
+const http = require('http').Server(app);
+
+//express requirements
+const express = require('express');
 const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
+const dateTime = require("simple-datetime-formater");
+const bodyParser = require("body-parser");
+const chatRouter = require("./route/chatroute");
+const loginRouter = require("./route/loginRoute");
+
+const port = 3000;
 
 // Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname + "public"));
+
+//socket io
+socket = io(http);
 
 const users = new Set();
 
-function formatMessage(username, text) {
-  return {
-    username,
-    text,
-    time: moment().format('h:mm a')
-  };
-}
-
-function signupUser(id, username, password, chat) {
-        // use a fetch to get this person or make a new person from mongo
-        // then set currUser as it
-        const user = {id, username, password, chat};
-        users.add(user);
-        return user;
-}
-
-function getCurrentUser(id) {
-  return [...users].filter(i => i.id == id);
-}
-
-function userLeave(id) {
-        [...users].filter(i => i.id != id);
-}
-
-function getChatUsers() {
-        return [...users].filter(i => i.chat == currUser.chat);
-}
 
 const botName = 'MWA Chat';
 
 // Run when client connects
-io.on('connection', socket => {
-  socket.on('joinChat', ({ username, password, chat }) => {
-    const user = signupUser(socket.id, username, password, chat);
-
-    socket.join(user.chat);
-
-    // Welcome current user
-    socket.emit('message', formatMessage(botName, 'Welcome to MWA Chat!'));
-
-    // Broadcast when a user connects
-    socket.broadcast
-      .to(user.chat)
-      .emit(
-        'message',
-        formatMessage(botName, `${user.username} has joined the chat`)
-      );
-
-    // Send users and chat info
-    io.to(user.chat).emit('chatUsers', {
-      chat: user.chat,
-      users: getChatUsers(user.chat)
+socket.on('connection', socket => {
+  console.log("User Is Connected");
+  
+  socket.on("disconnect", function() {
+    console.log("User disconnected");
+  });
+  
+  socket.on("typing", data => {
+    socket.broadcast.emit("notifyTyping", {
+      user: data.user,
+      message: data.message
     });
   });
-
-  // Listen for chatMessage
-  socket.on('chatMessage', msg => {
-    const user = getCurrentUser(socket.id);
-
-    io.to(user.chat).emit('message', formatMessage(user.username, msg));
+  
+  socket.on("stopTyping", () => {
+    socket.broadcast.emit("notifyStopTyping");
   });
+  
+  socket.on("chat message", function(msg) {
+    console.log("message: " + msg);
 
-  // Runs when client disconnects
-  socket.on('disconnect', () => {
-    const user = userLeave(socket.id);
+    //broadcast message to everyone in port:5000 except yourself.
+    socket.broadcast.emit("received", { message: msg });
 
-    if (user) {
-      io.to(user.chat).emit(
-        'message',
-        formatMessage(botName, `${user.username} has left the chat`)
-      );
+    //save chat to the database
+    connect.then(db => {
+      console.log("connected correctly to the server");
+      let chatMessage = new Chat({ message: msg, sender: "Anonymous" });
 
-      // Send users and chat info
-      io.to(user.chat).emit('chatUsers', {
-        chat: user.chat,
-        users: getChatUsers(user.chat)
-      });
-    }
+      chatMessage.save();
+    });
   });
 });
 
