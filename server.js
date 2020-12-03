@@ -8,6 +8,10 @@ const http = require('http').Server(app);
 //socket io
 const socketio = require('socket.io')(http);
 
+app.get('/', function(req, res) {
+    res.render('index.html');
+});
+
 // Run when client connects
 io.socket.on('connection', function(socket) {
   console.log("User Is Connected");
@@ -27,6 +31,4 @@ io.socket.on('connection', function(socket) {
   });
   
 });
-const server = http.listen(3000, function() {
-  console.log('listening on *:3000);
-});
+const server = http.listen(3000);
