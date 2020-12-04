@@ -45,12 +45,22 @@ io.sockets.on('connection', function(socket) {
     socket.username = username;
     io.emit('is_online', '😼 <i>' + socket.username + ' joined the chat..</i>');
     numberOfUsers++;
+    console.log(numberOfUsers);
   });
 
   socket.on('disconnect', function(username) {
     socket.username = username;
     io.emit('is_online', '😿 <i>' + socket.username + ' left the chat..</i>');
     numberOfUsers--;
+    console.log(numberOfUsers);
+    if (numberOfUsers===0) {
+      Chat.deleteMany({})
+      .exec()
+          .catch(err => {
+            console.log(err);
+          });
+      console.log("foooo real neighbor");
+    }
   });
 
   socket.on('chat_message', function(message) {
