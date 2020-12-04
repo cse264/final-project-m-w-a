@@ -7,12 +7,12 @@
 ### Build a web app in a team of 5-6
 
 ### Requirements:
-* Must have user accounts and different user roles
-* Must use a database
-* Must have interactive UI
-* Must use a library or framework not discussed/used in class
-* Must use an outside REST API in some way
-* Must deploy your application in some publicly accessible way (Heroku, Digital Ocean, AWS, etc)
+* Must have user accounts and different user roles (done) - purple:admin and green:not_admin
+* Must use a database (done)
+* Must have interactive UI (done)
+* Must use a library or framework not discussed/used in class (done)
+* Must use an outside REST API in some way (to be done)
+* Must deploy your application in some publicly accessible way (Heroku, Digital Ocean, AWS, etc) (Sameer and Cameron Carrying us)
 
 ### Instructions
 Build your team and write a document describing your application to me by Thursday, November 12, 2020. I will approve your web application idea. In your paper, include:
