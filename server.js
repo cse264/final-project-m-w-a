@@ -10,6 +10,9 @@ const http = require('http').Server(app);
 //socket io
 const io = require('socket.io')(http);
 
+// admin 
+var admin = null; 
+
 var numberOfUsers = 0;
 
 mongoose.Promise = global.Promise;
@@ -45,6 +48,9 @@ io.sockets.on('connection', function(socket) {
     socket.username = username;
     io.emit('is_online', '😼 <i>' + socket.username + ' joined the chat..</i>');
     numberOfUsers++;
+    if (numberOfUsers===1) {
+      admin = username; // make it global
+    }
     console.log(numberOfUsers);
   });
 
@@ -69,9 +75,14 @@ io.sockets.on('connection', function(socket) {
     // Only allow message to go through if number is less than 2,
     // to ensure that on average 2 people are speaking at most
     // at once on the chat.
-    if (nonce < 5) {
+    if (nonce < 5 || socket.username===admin) { 
         var tmp = new Chat({'message': message, 'sender': socket.username, 'date': Date.now()});
-        io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
+        if (socket.username===admin) {
+          io.emit('chat_message', '<strong style="color:purple;">' + socket.username + '</strong>: ' + message);
+        }
+        else {
+          io.emit('chat_message', '<strong style="color:green;">' + socket.username + '</strong>: ' + message);
+        }
         tmp.save(function (err, idk) {
                 if (err) {
                         console.log("Error saving message");
