@@ -24,6 +24,7 @@ form {
 form input { 
 	border-style: solid; 
 	border-width: 1px; 
+	font-size: 16px;
 	padding: 10px; 
 	width: 85%; 
 	margin-right: .5%; 
@@ -35,21 +36,30 @@ form button {
 	border: none; 
 	padding: 10px; 
 	margin-left: 2%; 
+	font-size: 16px;
 }
 
 #messages { 
 	list-style-type: none; 
 	margin: 0; 
-	padding: 50px;
+	padding: 50px 50px 100px;
 }
 
 #messages li { 
+	display: flex;
+	flex-direction: column;
 	margin: 20px 0;
-	padding: 5px 10px; 
+}
+
+.bubble {
+	max-width: 100%;
+	padding: 5px 10px;
 	border-color: #000; 
 	border-style: solid; 
 	border-width: 1px;
 	border-radius: 10px;
 	box-shadow: 1px 2px 8px 0 rgba(0,0,0,0.4);
 	background-color: #aaffaa;
+	word-wrap: break-word;
+	align-self: flex-end;
 }

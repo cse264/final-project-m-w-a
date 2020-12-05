@@ -28,18 +28,18 @@
                 });
                 // append the chat text message
                 socket.on('chat_message', function(msg){
-                    $('#messages').append($('<li>').html(msg));
+                    $('#messages').append($('<li>').html("<div class='bubble'>" + msg + "</div>"));
                 });
                 // append text if someone is online
                 socket.on('is_online', function(username) {
-                    $('#messages').append($('<li>').html(username));
+                    $('#messages').append($('<li>').html("<div class='bubble'>" + username + "</div>"));
                 });
                 // Request username
                 var username = prompt('Please tell me your name');
                 socket.emit('username', username);
 		console.log(res);
                 for (var i = 0; i < res.length; i++) {
-                  $('#messages').append($('<li>').html('<strong>' + res[i].sender + '</strong>: ' + res[i].message));
+                  $('#messages').append($('<li>').html("<div class='bubble'><strong>" + res[i].sender + "</strong>: " + res[i].message + "</div>"));
                 }
 	    });
     </script>
