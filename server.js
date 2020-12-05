@@ -65,7 +65,6 @@ io.sockets.on('connection', function(socket) {
           .catch(err => {
             console.log(err);
           });
-      console.log("foooo real neighbor");
     }
   });
 
