@@ -30,19 +30,22 @@
                 });
                 // append the chat text message
                 socket.on('chat_message', function(msg){
-                  if (username === res[res.length - 1].sender) {//sent by user
-                    $('#messages').append($('<li>').html("<div class='bubble' style='align-self: flex-end;'>" + msg + "</div>"));
-                  } else {
-                    $('#messages').append($('<li>').html("<div class='bubble'>" + msg + "</div>"));
-                  }
+                  fetch('http://localhost:3000/messages', {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json'}
+                    })
+                    .then((response) => response.json())
+                    .then(res => {
+                      if (username === res[res.length - 1].sender.toString()) {//sent by user
+                        $('#messages').append($('<li>').html("<div class='bubble' style='align-self: flex-end;'>" + msg + "</div>"));
+                      } else {
+                        $('#messages').append($('<li>').html("<div class='bubble'>" + msg + "</div>"));
+                      }
+                    });
                 });
                 // append text if someone is online
                 socket.on('is_online', function(username) {
-                  if (username === res[res.length - 1].sender) {//sent by user
-                    $('#messages').append($('<li>').html("<div class='bubble' style='align-self: flex-end;'>" + username + "</div>"));
-                  } else {
-                    $('#messages').append($('<li>').html("<div class='bubble'>" + username + "</div>"));
-                  }
+                  $('#messages').append($('<li>').html("<div class='bubble'>" + username + "</div>"));
                 });
                 // Request username
                 var username = prompt('Please tell me your name');

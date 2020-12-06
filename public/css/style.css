@@ -59,6 +59,15 @@ form button {
     margin: 0 30px;
 }
 
+form button:hover {
+    background: rgb(114, 194, 221);
+}
+
+form button:active {
+    transform: translate(0, 2px);
+    box-shadow: 0;
+}
+
 #messages { 
 	list-style-type: none; 
     margin: 0; 
