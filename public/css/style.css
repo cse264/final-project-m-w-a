@@ -8,58 +8,75 @@
 
 body { 
 	font: 16px "Roboto", Helvetica, Arial; 
+	background: rgb(144,40,121);
+    background: linear-gradient(75deg, rgba(144,40,121,1) 0%, rgba(253,29,29,1) 50%, rgba(252,182,69,1) 89%);
+    background-size: contain;
+    min-height: 100vh;
+}
+
+#logo {
+    width: 100px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: -1;
 }
 
 form { 
-	background: #fff; 
-	padding: 20px; 
-	position: fixed; 
-	bottom: 0; 
-	width: 100%;
-	border-color: #000; 
-	border-top-style: solid; 
-	border-top-width: 1px;
+	background: rgba(255,255,255,0); 
+    padding: 20px; 
+    position: fixed; 
+    bottom: 0; 
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
 }
 
 form input { 
-	border-style: solid; 
-	border-width: 1px; 
 	font-size: 16px;
-	padding: 10px; 
-	width: 85%; 
-	margin-right: .5%; 
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 1px 2px 8px 0 rgba(0,0,0,0.4);
+    flex-grow: 8;
+    margin: 0 30px;
+}
+
+form input:focus, form button:focus {
+    outline: none;
 }
 
 form button { 
 	width: 9%; 
-	background: rgb(130, 224, 255); 
-	border: none; 
-	padding: 10px; 
-	margin-left: 2%; 
-	font-size: 16px;
+    background: rgb(130, 224, 255); 
+    border: hidden; 
+    padding: 10px; 
+    font-size: 16px;
+    border-radius: 10px;
+    box-shadow: 1px 2px 8px 0 rgba(0,0,0,0.4);
+    flex-grow: 1;
+    width: 50px;
+    margin: 0 30px;
 }
 
 #messages { 
 	list-style-type: none; 
-	margin: 0; 
-	padding: 50px 15vw 80px;
+    margin: 0; 
+    padding: 50px 15vw 80px;
 }
 
 #messages li { 
 	display: flex;
-	flex-direction: column;
-	margin: 20px 0;
+    flex-direction: column;
+    margin: 20px 0;
 }
 
 .bubble {
 	max-width: 80%;
-	padding: 5px 10px;
-	border-color: #000; 
-	border-style: solid; 
-	border-width: 1px;
-	border-radius: 10px;
-	box-shadow: 1px 2px 8px 0 rgba(0,0,0,0.4);
-	background-color: #aaffaa;
-	word-wrap: break-word;
-	align-self: flex-start;
+    padding: 5px 10px;
+    border-radius: 10px;
+    box-shadow: 1px 2px 8px 0 rgba(0,0,0,0.4);
+    background-color: #aaffaa;
+    word-wrap: break-word;
+    align-self: flex-start;
 }

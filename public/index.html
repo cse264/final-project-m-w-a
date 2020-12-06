@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
+    <img id="logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/6/65/LehighMountainHawks.svg/1200px-LehighMountainHawks.svg.png">
     <ul id="messages"></ul>
     <form action="/" method="POST" id="chatForm">
       <input id="txt" autocomplete="off" autofocus="on" placeholder="type your message here..." /><button>Send</button>
@@ -46,7 +47,7 @@
                 // Request username
                 var username = prompt('Please tell me your name');
                 socket.emit('username', username);
-		console.log(res);
+		            console.log(res);
                 for (var i = 0; i < res.length; i++) {
                   if (username === res[i].sender) {
                     $('#messages').append($('<li>').html("<div class='bubble' style='align-self: flex-end;'><strong>" + res[i].sender + "</strong>: " + res[i].message + "</div>"));
