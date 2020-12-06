@@ -5,6 +5,7 @@
     <script src="../../socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
     <ul id="messages"></ul>
@@ -28,18 +29,30 @@
                 });
                 // append the chat text message
                 socket.on('chat_message', function(msg){
+                  if (username === res[res.length - 1].sender) {//sent by user
+                    $('#messages').append($('<li>').html("<div class='bubble' style='align-self: flex-end;'>" + msg + "</div>"));
+                  } else {
                     $('#messages').append($('<li>').html("<div class='bubble'>" + msg + "</div>"));
+                  }
                 });
                 // append text if someone is online
                 socket.on('is_online', function(username) {
+                  if (username === res[res.length - 1].sender) {//sent by user
+                    $('#messages').append($('<li>').html("<div class='bubble' style='align-self: flex-end;'>" + username + "</div>"));
+                  } else {
                     $('#messages').append($('<li>').html("<div class='bubble'>" + username + "</div>"));
+                  }
                 });
                 // Request username
                 var username = prompt('Please tell me your name');
                 socket.emit('username', username);
 		console.log(res);
                 for (var i = 0; i < res.length; i++) {
-                  $('#messages').append($('<li>').html("<div class='bubble'><strong>" + res[i].sender + "</strong>: " + res[i].message + "</div>"));
+                  if (username === res[i].sender) {
+                    $('#messages').append($('<li>').html("<div class='bubble' style='align-self: flex-end;'><strong>" + res[i].sender + "</strong>: " + res[i].message + "</div>"));
+                  } else {
+                    $('#messages').append($('<li>').html("<div class='bubble'><strong>" + res[i].sender + "</strong>: " + res[i].message + "</div>"));
+                  }
                 }
 	    });
     </script>

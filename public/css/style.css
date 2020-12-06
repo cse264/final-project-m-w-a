@@ -42,7 +42,7 @@ form button {
 #messages { 
 	list-style-type: none; 
 	margin: 0; 
-	padding: 50px 50px 100px;
+	padding: 50px 15vw 80px;
 }
 
 #messages li { 
@@ -52,7 +52,7 @@ form button {
 }
 
 .bubble {
-	max-width: 100%;
+	max-width: 80%;
 	padding: 5px 10px;
 	border-color: #000; 
 	border-style: solid; 
@@ -61,5 +61,5 @@ form button {
 	box-shadow: 1px 2px 8px 0 rgba(0,0,0,0.4);
 	background-color: #aaffaa;
 	word-wrap: break-word;
-	align-self: flex-end;
+	align-self: flex-start;
 }
