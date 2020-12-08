@@ -11,7 +11,7 @@
     <img id="logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/6/65/LehighMountainHawks.svg/1200px-LehighMountainHawks.svg.png">
     <ul id="messages"></ul>
     <form action="/" method="POST" id="chatForm">
-      <input id="txt" autocomplete="off" autofocus="on" placeholder="type your message here..." /><button>Send</button>
+      <input id="txt" autocomplete="off" autofocus="on" placeholder="Type your message here...(or send blank)" /><button>Send</button>
     </form>
     <script>
 	    fetch('http://localhost:3000/messages', {
@@ -24,8 +24,24 @@
                 // submit text message without reload/refresh the page
                 $('form').submit(function(e){
                     e.preventDefault(); // prevents page reloading
-                    socket.emit('chat_message', $('#txt').val());
-                    $('#txt').val('');
+                    var txt = $('#txt').val();
+                    console.log(txt);
+		    if (txt.length == 0) {
+			fetch('https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes', {
+                        	method: 'GET',
+                        	headers: { 'Content-Type': 'application/json'}
+                    	})
+                    	.then((response) => response.json())
+		    	.then(res => {
+console.log(res);
+                      		txt = res.setup + ': ' + res.punchline;
+				socket.emit('chat_message', txt);
+                    		$('#txt').val('');
+                    	});
+                    } else {
+                    	socket.emit('chat_message', txt);
+                    	$('#txt').val('');
+		    }
                     return false;
                 });
                 // append the chat text message
