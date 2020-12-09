@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html>
   <head>
     <title>Simple Group Chat on Node.js</title>
     <script src="../../socket.io/socket.io.js"></script>
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
@@ -14,13 +15,14 @@
       <input id="txt" autocomplete="off" autofocus="on" placeholder="Type your message here...(or send blank)" /><button>Send</button>
     </form>
     <script>
-	    fetch('https://mwa-chat.herokuapp.com/messages', {
+	console.log("hey");
+	    fetch('https://evening-lake-37049.herokuapp.com/messages', {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json'}
             })
             .then((response) => response.json())
             .then(res => {
-                var socket = io.connect('https://mwa-chat.herokuapp.com/');
+                var socket = io.connect('https://evening-lake-37049.herokuapp.com/');
                 // submit text message without reload/refresh the page
                 $('form').submit(function(e){
                     e.preventDefault(); // prevents page reloading
@@ -75,3 +77,4 @@ console.log(res);
     </script>
   </body>
 </html>
+

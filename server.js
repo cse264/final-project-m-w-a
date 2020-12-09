@@ -91,4 +91,4 @@ io.sockets.on('connection', function(socket) {
   });
 
 });
-const server = http.listen(3000);
+const server = http.listen(process.env.PORT || 80);
