@@ -99,3 +99,7 @@ button:active {
     word-wrap: break-word;
     align-self: flex-start;
 }
+
+#chatForm {
+    background-image: linear-gradient(rgba(144,40,121,0), rgba(144,40,121,1));
+}
