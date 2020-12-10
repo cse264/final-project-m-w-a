@@ -6,9 +6,9 @@
 Hawk Messenger is an instant messaging app designed for people to make friends at Lehigh University. The application features a global chat so everyone can communicate during the times of COVID and not feel excluded. The application also utilizes a Dad Jokes API to provide a more comfortable, "home-y" environment for its users.
 
 ### Roles
-Database: Sameer Merchant and Fernando Cuaya
-Node/Backend: Vaibhav Anand, Wilmer Hernandez, and Cameron Osborn
-Frontend: Erick Siguenza and Ryan Schmid
+* **Database:** Sameer Merchant and Fernando Cuaya
+* **Node/Backend:** Vaibhav Anand, Wilmer Hernandez, and Cameron Osborn
+* **Frontend:** Erick Siguenza and Ryan Schmid
 
 ### Functionality
 Users can log on and chat with others on the application. When a blank message is sent, a randomly generated dad joke is sent in its place. These dad jokes can act as great conversation starters. 
