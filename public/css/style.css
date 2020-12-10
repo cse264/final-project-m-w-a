@@ -42,11 +42,11 @@ form input {
     margin: 0 30px;
 }
 
-form input:focus, form button:focus {
+form input:focus, button:focus {
     outline: none;
 }
 
-form button { 
+button { 
 	width: 9%; 
     background: rgb(130, 224, 255); 
     border: hidden; 
@@ -59,13 +59,23 @@ form button {
     margin: 0 30px;
 }
 
-form button:hover {
+button:hover {
     background: rgb(114, 194, 221);
 }
 
-form button:active {
+button:active {
     transform: translate(0, 2px);
     box-shadow: 0;
+}
+
+#newMessagesNotice {
+    position: fixed;
+    width: 200px;
+    height: 42px;
+    margin-left: -100px;
+    text-align: center;
+    bottom: 100px;
+    left: 50%;
 }
 
 #messages { 
