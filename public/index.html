@@ -11,6 +11,7 @@
   <body>
     <img id="logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/6/65/LehighMountainHawks.svg/1200px-LehighMountainHawks.svg.png">
     <ul id="messages"></ul>
+    <button id="newMessagesNotice" style="display: none;">New messages</button>
     <form action="/" method="POST" id="chatForm">
       <input id="txt" autocomplete="off" autofocus="on" placeholder="Type your message here...(or send blank)" /><button>Send</button>
     </form>
@@ -54,14 +55,20 @@ console.log(res);
                   let regExp = new RegExp('>' + username + '</strong>');
                   if (regExp.test(msg)) {//sent by user
                     $('#messages').append($('<li>').html("<div class='bubble' style='align-self: flex-end;'>" + msg + "</div>"));
-                  } else {//sent by responder
+                    //scroll to bottom
+                    window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
+		  } else {//sent by responder
                     $('#messages').append($('<li>').html("<div class='bubble'>" + msg + "</div>"));
+		    autoScroll();
+                    newMessages();
                   }
                 });
                 // append text if someone is online
                 socket.on('is_online', function(username) {
                   $('#messages').append($('<li>').html("<div class='bubble'>" + username + "</div>"));
-                });
+                  autoScroll();
+                  newMessages();
+		});
                 // Request username
                 var username = prompt('Please tell me your name');
                 socket.emit('username', username);
@@ -74,6 +81,35 @@ console.log(res);
                   }
                 }
 	    });
+	    
+      //check if new message has been read
+      window.onscroll = function() {
+        if ((window.innerHeight + window.scrollY + 10) >= document.body.offsetHeight) {
+          document.getElementById('newMessagesNotice').style.display = "none";
+        }
+      };
+
+      //when new message notification is clicked, go to bottom and hide notification
+      document.getElementById('newMessagesNotice').onclick = function() {
+        window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
+        document.getElementById('newMessagesNotice').style.display = "none";
+      }
+      
+      //autoscrolls to bottom if user is near bottom
+      function autoScroll() {
+        if ((window.innerHeight + window.scrollY + 200) >= document.body.offsetHeight) {
+          window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
+        }
+      }
+
+      //shows a "new messages" element if the user is scrolled up
+      function newMessages() {
+        if ((window.innerHeight + window.scrollY + 200) < document.body.offsetHeight) {
+          document.getElementById('newMessagesNotice').style.display = "block";
+        } else {
+          document.getElementById('newMessagesNotice').style.display = "none";
+        }
+      }
     </script>
   </body>
 </html>
